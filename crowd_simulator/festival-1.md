@@ -1,9 +1,8 @@
 ---
-id: festival-crowd-flow-simulator-1
+id: 692e463dfef29dc6e27b470a
 title: Step 1
 challengeType: 0
 dashedName: step-1
-demoType: onLoad
 ---
 
 # --description--
@@ -33,6 +32,72 @@ You should use `console.log()` to log the `morningGates` array.
 ```js
 assert.match(code, /console\.log\(\s*morningGates\s*\)/);
 ```
+
+The `morningGates` array should have exactly three gate objects.
+
+```js
+assert.strictEqual(morningGates.length, 3);
+```
+
+Each gate in `morningGates` should have an `id`, `capacity`, and `queue` property.
+
+```js
+morningGates.forEach(gate => {
+  assert.isString(gate.id);
+  assert.isNumber(gate.capacity);
+  assert.isArray(gate.queue);
+});
+```
+
+The North gate in `morningGates` should have a capacity of 5.
+
+```js
+const northGate = morningGates.find(gate => gate.id === 'North');
+assert.strictEqual(northGate.capacity, 5);
+```
+
+The North gate in `morningGates` should have a queue array with 7 elements.
+
+```js
+const northGate = morningGates.find(gate => gate.id === 'North');
+assert.strictEqual(northGate.queue.length, 7);
+```
+
+The first element in the North gate's queue should be 8.
+
+```js
+const northGate = morningGates.find(gate => gate.id === 'North');
+assert.strictEqual(northGate.queue[0], 8);
+```
+
+The `morningBackups` array should have exactly one element.
+
+```js
+assert.strictEqual(morningBackups.length, 1);
+```
+
+The `morningCapacityUpdates` object should have a `North` property.
+
+```js
+assert.isObject(morningCapacityUpdates.North);
+```
+
+The North gate's capacity should update to 3 at tick 3.
+
+```js
+assert.strictEqual(morningCapacityUpdates.North[3], 3);
+```
+
+The `eveningGates` array structure should match `morningGates` with the same properties.
+
+```js
+eveningGates.forEach(gate => {
+  assert.isString(gate.id);
+  assert.isNumber(gate.capacity);
+  assert.isArray(gate.queue);
+});
+```
+
 
 # --seed--
 

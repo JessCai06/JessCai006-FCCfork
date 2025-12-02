@@ -7,21 +7,29 @@ dashedName: step-3
 
 # --description--
 
-Next, you'll implement the `handleCongestion` function, which is the heart of the backup routing system.
+Next, you'll implement the handleCongestion function, which is the heart of the backup routing system. This function detects when a gate has more pending attendees than its capacity can handle, then attempts to reroute the overflow to backup gates. It should:
 
-This function detects when a gate has more pending attendees than its capacity can handle, then attempts to reroute the overflow to backup gates. It should:
 
-1. Check if the gate's `pendingAttendees` exceeds its `capacity`
+1. Check if the gate's pendingAttendees exceeds its capacity
+Before doing any work, compare gate.pendingAttendees to gate.capacity. If the number of people waiting at this gate is less than or equal to what it can handle this tick, there is no congestion and no rerouting needed. In that case, you should return early from the function. This keeps the logic efficient and ensures you only run the rerouting code when there is actually a problem to solve.
+
 2. Calculate the overflow amount
-3. Loop through the `backups` array to find the first backup gate that is not over capacity (where `pendingAttendees <= capacity`)
+If the gate is congested, compute how many attendees it cannot handle by subtracting gate.capacity from gate.pendingAttendees. For example, if there are 30 people waiting and the capacity is 20, the overflow is 10. This overflow value represents the group that needs to be moved to a backup gate, and you’ll use it both to update the current gate’s pending count and to increment the backup gate’s pending count.
+
+3. Loop through the backups array to find the first backup gate that is not over capacity (pendingAttendees <= capacity)
+The backups array stores candidate backup gate IDs in priority order. Use a for...of loop to iterate through this array and check each backup gate in turn. For each backup ID, look up the actual gate object (using gates.find(...) as suggested). For each candidate backup gate, check whether backupGate.pendingAttendees <= backupGate.capacity. This ensures you only reroute attendees to a gate that still has room this tick, mimicking a real system that tries backups in order until it finds one that can help.
+
 4. Transfer the overflow attendees to that backup gate
-5. Update the rerouting statistics (`reroutedOut` and `reroutedIn`)
-6. Log a success message and return early
-7. If no backup gate has capacity, log a congestion message
+Once you find an eligible backup gate, adjust both gates’ state. Decrease gate.pendingAttendees by the overflow amount, and increase backupGate.pendingAttendees by the same amount. Conceptually, this is like moving a group of people from one line to another. This step is crucial because it keeps the simulation’s state consistent: the total number of attendees in the system stays the same, but they are redistributed across gates.
 
-Create a function called `handleCongestion` that takes four parameters: `gate`, `gates`, `backups`, and `tick`.
+4. Update the rerouting statistics (reroutedOut and reroutedIn)
+To make the simulation more informative, keep track of how many attendees are rerouted. Increment gate.reroutedOut by the overflow amount to record how many people were sent away from this gate. Similarly, increment backupGate.reroutedIn by the overflow amount to record how many people were received there. These fields will be useful later when you summarize gate performance and explain how often backup routing was needed.
 
-Use an early return if `gate.pendingAttendees <= gate.capacity`. Otherwise, calculate the overflow and use a `for...of` loop to find an available backup gate. Use `gates.find()` to locate the backup gate by its ID.
+5. Log a success message and return early
+After successfully rerouting to a backup gate, log a message that includes useful context, such as the current tick, the original gate’s ID, the backup gate’s ID, and the number of attendees moved. This logging helps learners (and testers) understand when and why rerouting happened. Once the reroute is done, you should return immediately from the function, because the congestion for this gate has been resolved and you don’t need to check any additional backup gates.
+
+6. If no backup gate has capacity, log a congestion message
+If the loop finishes and you never found a backup gate with available capacity, then the overflow cannot be rerouted anywhere. In this case, log a message indicating that the gate remains congested and that no backup was available. This models a realistic worst-case scenario (all gates overloaded) and gives clear visibility into failure conditions during the simulation.
 
 # --hints--
 
