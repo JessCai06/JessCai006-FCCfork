@@ -13,8 +13,8 @@ const eveningGates = [
 ];
 
 // backup routing config (per scenario)
-const morningBackups = ["East", "West", "North"];
-const eveningBackups = ["East", "West", "North"];
+const morningBackups = ["West"];
+const eveningBackups = ["East"];
 
 // dynamic capacity updates: gateId -> { tick: newCap }
 const morningCapacityUpdates = { North: { 3: 3, 6: 2 }, East: { 4: 6 }, West: { 2: 1 } };

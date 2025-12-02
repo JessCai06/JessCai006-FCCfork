@@ -6,8 +6,6 @@ dashedName: step-1
 demoType: onLoad
 ---
 
-uhhhh
-
 # --description--
 
 In this workshop, you'll build a Festival Crowd Flow Simulator that manages attendee flow through multiple entrance gates with dynamic capacity changes and congestion handling. You'll practice working with time-based simulations, queue processing, and data structures.
@@ -58,8 +56,8 @@ const eveningGates = [
 ];
 
 // backup routing config (per scenario)
-const morningBackups = ['East', 'West', 'North'];
-const eveningBackups = ['East', 'West', 'North'];
+const morningBackups = ['West'];
+const eveningBackups = ['East'];
 
 // dynamic capacity updates: gateId -> { tick: newCap }
 const morningCapacityUpdates = {

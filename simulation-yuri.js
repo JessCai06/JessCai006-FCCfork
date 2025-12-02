@@ -4,22 +4,25 @@
 const morningGates = [
   { id: "North", capacity: 5, queue: [8, 3, 4, 10, 1, 0, 2] },
   { id: "East", capacity: 4, queue: [4, 6, 0, 2, 8, 3, 1] },
-  { id: "West", capacity: 3, queue: [2, 5, 3, 1, 0, 0, 0] }
+  { id: "West", capacity: 3, queue: [2, 5, 3, 1, 0, 0, 0] },
+  { id: "South", capacity: 2, queue: [5, 2, 3, 7, 2, 1, 0] }
 ];
 
 const eveningGates = [
   { id: "North", capacity: 4, queue: [2, 2, 2, 2, 2, 2] },
   { id: "East", capacity: 3, queue: [1, 1, 1, 5, 0, 0] },
-  { id: "West", capacity: 2, queue: [0, 0, 3, 3, 3, 3] }
+  { id: "West", capacity: 2, queue: [0, 0, 3, 3, 3, 3] },
+  { id: "South", capacity: 2, queue: [3, 3, 2, 2, 1, 1] },
+  { id: "Southwest", capacity: 2, queue: [2, 2, 3, 4, 0, 0] }
 ];
 
 // backup routing config (per scenario)
-const morningBackups = ["East", "West", "North"];
-const eveningBackups = ["East", "West", "North"];
+const morningBackups = ["South"];
+const eveningBackups = ["Southwest", "South"];
 
 // dynamic capacity updates: gateId -> { tick: newCap }
-const morningCapacityUpdates = { North: { 3: 3, 6: 2 }, East: { 4: 6 }, West: { 2: 1 } };
-const eveningCapacityUpdates = { North: { 5: 2 }, East: { }, West: { 3: 4 } };
+const morningCapacityUpdates = { North: { 3: 3, 6: 2 }, East: { 4: 6 }, West: { 2: 1 }, South: { 4: 1 } };
+const eveningCapacityUpdates = { North: { 5: 2 }, East: { }, West: { 3: 4 }, South: { 3: 1 }, Southwest: { 4: 1 } };
 
 //! helpers
 export function measureThroughput(gatesList) {
