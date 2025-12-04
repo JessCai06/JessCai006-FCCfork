@@ -1,4 +1,3 @@
-/* eslint-disable jsdoc/require-returns, jsdoc/require-param */
 import { type FastifyPluginCallbackTypebox } from '@fastify/type-provider-typebox';
 import { PrismaClientValidationError } from '@prisma/client/runtime/library.js';
 import { type FastifyInstance, type FastifyReply } from 'fastify';
@@ -459,6 +458,7 @@ async function postExamGeneratedExamHandler(
         userId: user.id,
         examId: exam.id,
         generatedExamId: generatedExam.id,
+        examModerationId: null,
         startTime: new Date(),
         questionSets: []
       }
